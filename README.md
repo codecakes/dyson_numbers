@@ -5,6 +5,9 @@ An n-parasitic number (in base 10) is a positive natural number which can be mul
 Run it like:
 
 ```
+python dyson_parasitic.py
+
+#With cmd line options
 python dyson_parasitic.py --n 2
 [ipython] %run dyson_parasitic.py --n 2
 
