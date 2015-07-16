@@ -20,12 +20,29 @@
 # - Akul Mathur - @codecakes
 #####################################################################
 
+import string
+digs = string.digits + string.letters
+
+def int2base(x, base):
+  if x < 0: sign = -1
+  elif x == 0: return digs[0]
+  else: sign = 1
+  x *= sign
+  digits = []
+  while x:
+    digits.append(digs[x % base])
+    x /= base
+  if sign < 0:
+    digits.append('-')
+  digits.reverse()
+  return ''.join(digits)
+
 
 def n_parasitic(n, base=10):
     '''Get n-parasitic number for base'''
     constant = (base*n - 1)
     for m in xrange(1, constant+1):
-        res = (base**m - 1)/(base*n - 1)
+        res = (base**m - 1)/constant
         res_str = str(res)
         res_str0 = '0' + res_str
         full = n * res
@@ -35,10 +52,28 @@ def n_parasitic(n, base=10):
             return ' '.join(list(res_str0))if int(res_str0) == res \
             else ' '.join(list(res_str))
 
+def b_parasitic(base):
+    '''A Brute Force approach to non base 10 numbers'''
+    num = 1
+    res = None
+    while 1:
+        new_num = num << 1
+        num_base_str = int2base(num, base)
+        new_num_base_str = int2base(new_num, base)
+        if num_base_str[-1] + num_base_str[:-1] == new_num_base_str:
+            #print num
+            res=  num_base_str
+        if num_base_str[-1] + num_base_str[:-1] +'0'  == new_num_base_str:
+            #print num
+            res = '0' + num_base_str[-1] + num_base_str[:-1]
+        if res:
+            res = list(res)
+            return ' '.join([str(string.letters.index(let) + 10) \
+            if let in string.letters else str(let) for let in res])
+        num += 1
         
     
 if __name__ == "__main__":
-    import sys
     import argparse
     
     parser = argparse.ArgumentParser()
@@ -59,4 +94,13 @@ if __name__ == "__main__":
             print n_parasitic(i)
     
     if 1 < args.n <= 9:
+        print "For base %s the double-trouble number is" %(args.n)
         print n_parasitic(args.n)
+    
+    bases = raw_input("Enter the bases for double trouble numbers: ").split()
+    for base in bases:
+        print "For base %s the double-trouble number is" %(base)
+        if int(base) == 10:
+            print n_parasitic(2)
+        else:
+            print b_parasitic(int(base))
