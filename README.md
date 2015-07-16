@@ -7,4 +7,7 @@ Run it like:
 ```
 python dyson_parasitic.py --n 2
 [ipython] %run dyson_parasitic.py --n 2
+
+#Dry test. Runs all n-parasitic numbers 2 to 9
+%run dyson_parasitic.py --dry --n 4
 ```
